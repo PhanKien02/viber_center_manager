@@ -1,3 +1,9 @@
+export async function generateStaticParams() {
+        return [
+                { center: "default", branch: "main" },
+        ];
+}
+
 "use client";
 
 import {
