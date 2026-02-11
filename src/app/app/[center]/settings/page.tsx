@@ -17,11 +17,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useTheme } from "@/providers/theme-provider";
 
 export default function SystemSettingsPage() {
         const params = useParams();
         const centerSlug = params["center"] as string;
         const [activeSection, setActiveSection] = useState("center-info");
+        const { primaryColor, setPrimaryColor } = useTheme();
         const [isSaving, setIsSaving] = useState(false);
 
         const handleSave = () => {
@@ -190,10 +192,11 @@ export default function SystemSettingsPage() {
                                                                                                         {['#6366f1', '#ec4899', '#f97316', '#22c55e', '#0ea5e9'].map((color) => (
                                                                                                                 <div
                                                                                                                         key={color}
-                                                                                                                        className="w-12 h-12 rounded-2xl cursor-pointer border-4 border-white shadow-sm ring-2 ring-transparent hover:ring-slate-200 transition-all flex items-center justify-center p-0.5"
+                                                                                                                        onClick={() => setPrimaryColor(color)}
+                                                                                                                        className={`w-12 h-12 rounded-2xl cursor-pointer border-4 border-white shadow-sm ring-2 ${primaryColor === color ? 'ring-primary/50 scale-105' : 'ring-transparent hover:ring-slate-200'} transition-all flex items-center justify-center p-0.5`}
                                                                                                                         style={{ backgroundColor: color }}
                                                                                                                 >
-                                                                                                                        {color === '#6366f1' && <Check className="w-5 h-5 text-white" />}
+                                                                                                                        {primaryColor === color && <Check className="w-5 h-5 text-white" />}
                                                                                                                 </div>
                                                                                                         ))}
                                                                                                         <div className="w-12 h-12 rounded-2xl border-2 border-dashed border-slate-200 flex items-center justify-center text-slate-400 cursor-pointer hover:border-primary hover:text-primary transition-all">
