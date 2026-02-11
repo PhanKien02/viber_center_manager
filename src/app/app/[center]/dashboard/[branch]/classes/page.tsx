@@ -135,7 +135,7 @@ export default function ClassesPage() {
         );
 
         return (
-                <div className="p-4 lg:p-8 max-w-[1400px] mx-auto w-full space-y-8">
+                <div className="p-4 lg:p-8 max-w-350 mx-auto w-full space-y-8">
                         {/* Page Header */}
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                 <div>
@@ -209,7 +209,7 @@ export default function ClassesPage() {
                                                 initial={{ opacity: 0, x: -10 }}
                                                 animate={{ opacity: 1, x: 0 }}
                                                 transition={{ delay: idx * 0.1 }}
-                                                className="bg-white rounded-[32px] p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all group relative overflow-hidden"
+                                                className="bg-white rounded-[4xl] p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all group relative overflow-hidden"
                                         >
                                                 <div className="flex items-start justify-between mb-6">
                                                         <div className="flex items-center gap-4">
@@ -241,7 +241,7 @@ export default function ClassesPage() {
                                                                 <p className="text-[10px] text-slate-400 font-bold uppercase mb-1">Sỉ số / Tối đa</p>
                                                                 <div className="flex items-center gap-2">
                                                                         <span className="text-sm font-bold text-slate-900">{cls.studentsCount}/{cls.maxStudents}</span>
-                                                                        <div className="flex-1 h-1.5 bg-slate-100 rounded-full max-w-[60px] overflow-hidden">
+                                                                        <div className="flex-1 h-1.5 bg-slate-100 rounded-full max-w-15 overflow-hidden">
                                                                                 <div className="h-full bg-primary" style={{ width: `${(cls.studentsCount / cls.maxStudents) * 100}%` }} />
                                                                         </div>
                                                                 </div>

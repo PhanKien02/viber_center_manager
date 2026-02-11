@@ -17,7 +17,13 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-
+export async function generateStaticParams() {
+        return [
+                { center: 'hn' },
+                { center: 'hcm' },
+                { center: 'dn' },
+        ]
+}
 export default function ProfilePage() {
         const params = useParams();
         const centerSlug = params["center"] as string;
