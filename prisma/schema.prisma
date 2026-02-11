@@ -1,0 +1,226 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Enums
+enum UserRole {
+  ADMIN
+  MANAGER
+  TEACHER
+  STUDENT
+  PARENT
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+// Core Models
+
+model Center {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  logo        String?
+  website     String?
+  address     String?
+  phone       String?
+  email       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  branches    Branch[]
+  users       User[]
+  courses     Course[]
+  students    Student[]
+
+  @@map("centers")
+}
+
+model Branch {
+  id          String   @id @default(uuid())
+  name        String
+  code        String
+  address     String?
+  phone       String?
+  centerId    String
+  center      Center   @relation(fields: [centerId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  classes     Class[]
+  rooms       Room[]
+
+  @@map("branches")
+}
+
+model User {
+  id          String   @id @default(uuid())
+  email       String   @unique
+  name        String?
+  phone       String?
+  avatar      String?
+  role        UserRole @default(STUDENT)
+  centerId    String?
+  center      Center?  @relation(fields: [centerId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  teacherClasses Class[] @relation("TeacherClasses")
+  managedClasses Class[] @relation("ManagerClasses")
+
+  @@map("users")
+}
+
+// Academic Models
+
+model Course {
+  id          String   @id @default(uuid())
+  name        String
+  code        String
+  description String?
+  centerId    String
+  center      Center   @relation(fields: [centerId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  classes     Class[]
+
+  @@map("courses")
+}
+
+model Class {
+  id          String   @id @default(uuid())
+  name        String
+  code        String
+  startDate   DateTime
+  endDate     DateTime?
+  branchId    String
+  branch      Branch   @relation(fields: [branchId], references: [id])
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id])
+  teacherId   String?
+  teacher     User?    @relation("TeacherClasses", fields: [teacherId], references: [id])
+  managerId   String?
+  manager     User?    @relation("ManagerClasses", fields: [managerId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  students    Enrollment[]
+  schedules   Schedule[]
+
+  @@map("classes")
+}
+
+model Student {
+  id          String   @id @default(uuid())
+  code        String
+  name        String
+  dob         DateTime?
+  gender      String?
+  phone       String?
+  email       String?
+  address     String?
+  centerId    String
+  center      Center   @relation(fields: [centerId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  enrollments Enrollment[]
+  payments    Payment[]
+
+  @@map("students")
+}
+
+model Enrollment {
+  id        String   @id @default(uuid())
+  classId   String
+  class     Class    @relation(fields: [classId], references: [id])
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id])
+  joinedAt  DateTime @default(now())
+  status    String   @default("ACTIVE") // ACTIVE, COMPLETED, DROPPED
+
+  @@unique([classId, studentId])
+  @@map("enrollments")
+}
+
+model Room {
+  id        String   @id @default(uuid())
+  name      String
+  capacity  Int?
+  branchId  String
+  branch    Branch   @relation(fields: [branchId], references: [id])
+
+  schedules Schedule[]
+
+  @@map("rooms")
+}
+
+model Schedule {
+  id        String   @id @default(uuid())
+  classId   String
+  class     Class    @relation(fields: [classId], references: [id])
+  roomId    String?
+  room      Room?    @relation(fields: [roomId], references: [id])
+  dayOfWeek Int      // 0=Sunday, 1=Monday, etc.
+  startTime String   // "08:00"
+  endTime   String   // "10:00"
+  
+  attendances Attendance[]
+
+  @@map("schedules")
+}
+
+model Attendance {
+  id          String   @id @default(uuid())
+  scheduleId  String
+  schedule    Schedule @relation(fields: [scheduleId], references: [id])
+  studentId   String
+  date        DateTime
+  status      AttendanceStatus @default(PRESENT)
+  note        String?
+
+  @@map("attendances")
+}
+
+// Finance Models
+
+model Payment {
+  id          String   @id @default(uuid())
+  studentId   String
+  student     Student  @relation(fields: [studentId], references: [id])
+  amount      Decimal  @db.Decimal(10, 2)
+  currency    String   @default("VND")
+  status      PaymentStatus @default(PENDING)
+  method      String?  // CASH, TRANSFER, CARD
+  description String?
+  paidAt      DateTime?
+  dueDate     DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("payments")
+}
+
