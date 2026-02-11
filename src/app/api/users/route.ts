@@ -1,5 +1,4 @@
-
-import { NextResponse, NextRequest } from "next/server";
+import { NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
 import { createUserSchema } from "@/lib/validations/schemas";
 import { errorResponse, successResponse } from "@/lib/api-response";
@@ -12,7 +11,7 @@ export async function GET(request: NextRequest) {
     // Example: Verify token
     // const authHeader = request.headers.get('authorization');
     // const { data: { user }, error } = await supabase.auth.getUser(authHeader?.split(' ')[1]);
-    
+
     // For now, returning all users
     const users = await prisma.user.findMany({
       include: {
@@ -32,7 +31,7 @@ export async function POST(request: NextRequest) {
 
     // Check if email exists
     const existing = await prisma.user.findUnique({
-      where: { email: validatedData.email }
+      where: { email: validatedData.email },
     });
     if (existing) {
       return errorResponse("User with this email already exists", 409);
@@ -53,7 +52,7 @@ export async function POST(request: NextRequest) {
     });
 
     return successResponse(newUser, 201);
-  } catch (error: any) {
+  } catch (error) {
     return errorResponse(error);
   }
 }

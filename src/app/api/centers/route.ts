@@ -1,7 +1,6 @@
-
-import { NextResponse, NextRequest } from "next/server";
+import { NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
-import { centerSchema, updateCenterSchema } from "@/lib/validations/schemas";
+import { centerSchema } from "@/lib/validations/schemas";
 import { errorResponse, successResponse } from "@/lib/api-response";
 // import { cookies } from "next/headers"; // Future usage for admin check
 
@@ -25,14 +24,15 @@ export async function POST(request: NextRequest) {
 
     // Auto-generate slug if not present
     if (!validatedData.slug) {
-      validatedData.slug = validatedData.name.toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '');
+      validatedData.slug = validatedData.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
     }
 
     // Check slug uniqueness
     const existing = await prisma.center.findUnique({
-      where: { slug: validatedData.slug }
+      where: { slug: validatedData.slug },
     });
     if (existing) {
       return errorResponse("Center with this slug already exists", 409);
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     });
 
     return successResponse(newCenter, 201);
-  } catch (error: any) {
+  } catch (error) {
     return errorResponse(error);
   }
 }

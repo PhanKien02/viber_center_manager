@@ -1,36 +1,42 @@
+import { NextResponse } from "next/server";
+import { ZodError } from "zod";
 
-import { NextResponse } from 'next/server';
-import { ZodError } from 'zod';
-
-export type ApiResponse<T = any> = {
+export type ApiResponse<T = unknown> = {
   success: boolean;
   data?: T;
-  error?: string | any;
-  meta?: any;
+  error?: string | unknown;
+  meta?: unknown;
 };
 
-export function successResponse<T>(data: T, status: number = 200, meta?: any): NextResponse {
+export function successResponse<T>(
+  data: T,
+  status: number = 200,
+  meta?: unknown,
+): NextResponse {
   return NextResponse.json(
     {
       success: true,
       data,
       meta,
     } as ApiResponse<T>,
-    { status }
+    { status },
   );
 }
 
-export function errorResponse(error: unknown, status: number = 500): NextResponse {
-  let message = 'Internal Server Error';
-  let details: any = null;
+export function errorResponse(
+  error: unknown,
+  status: number = 500,
+): NextResponse {
+  let message = "Internal Server Error";
+  let details: unknown = null;
 
   if (error instanceof ZodError) {
-    message = 'Validation Error';
+    message = "Validation Error";
     details = error.issues;
     status = 400;
   } else if (error instanceof Error) {
     message = error.message;
-  } else if (typeof error === 'string') {
+  } else if (typeof error === "string") {
     message = error;
   }
 
@@ -40,6 +46,6 @@ export function errorResponse(error: unknown, status: number = 500): NextRespons
       error: message,
       details,
     } as ApiResponse,
-    { status }
+    { status },
   );
 }
