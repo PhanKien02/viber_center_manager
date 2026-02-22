@@ -21,7 +21,6 @@ import {
   Crown,
   ChevronDown,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
 interface Teacher {
@@ -315,15 +314,9 @@ function TeacherPicker({ teachers, onChange }: TeacherPickerProps) {
             />
           </button>
 
-          <AnimatePresence>
+          <>
             {isOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -8, scale: 0.97 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -8, scale: 0.97 }}
-                transition={{ duration: 0.15 }}
-                className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-2xl shadow-xl shadow-slate-200/60 z-20 overflow-hidden"
-              >
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-2xl shadow-xl shadow-slate-200/60 z-20 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
                 {availableToAdd.map((t) => (
                   <div
                     key={t.id}
@@ -365,9 +358,9 @@ function TeacherPicker({ teachers, onChange }: TeacherPickerProps) {
                     </div>
                   </div>
                 ))}
-              </motion.div>
+              </div>
             )}
-          </AnimatePresence>
+          </>
         </div>
       )}
 
@@ -586,30 +579,37 @@ export default function ClassesPage() {
           const mainTeachers = cls.teachers.filter((t) => t.role === "main");
           const assistants = cls.teachers.filter((t) => t.role === "assistant");
           return (
-            <motion.div
+            <div
               key={cls.id}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              className="bg-white rounded-[4xl] p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all group relative overflow-hidden"
+              className="bg-white rounded-[4xl] p-8 border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all group relative overflow-hidden animate-in fade-in slide-in-from-left-4 duration-500 fill-mode-both"
+              style={{ animationDelay: `${idx * 100}ms` }}
             >
               {/* Header */}
               <div className="flex items-start justify-between mb-6">
-                <div className="flex items-center gap-4">
-                  <div className="bg-primary/5 w-12 h-12 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                <div className="flex items-start gap-4">
+                  <div className="bg-primary/5 w-14 h-14 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 shrink-0 border border-primary/10">
                     <BookOpen className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold group-hover:text-primary transition-colors">
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                      <span className="text-[10px] uppercase font-black text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md tracking-widest shadow-sm border border-slate-200/60">
+                        LỚP
+                      </span>
+                      <span className="text-[10px] uppercase font-bold text-primary bg-primary/5 px-2 py-0.5 rounded-md tracking-wider flex items-center gap-1 line-clamp-1 border border-primary/10">
+                        <BookOpen className="w-3 h-3" /> {cls.course}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-extrabold text-slate-900 group-hover:text-primary transition-colors leading-tight mb-2">
                       {cls.name}
                     </h3>
-                    <p className="text-xs text-slate-400 font-medium tracking-wide flex items-center gap-1.5 uppercase">
-                      <Clock className="w-3.5 h-3.5" /> {cls.schedule}
+                    <p className="text-xs text-slate-500 font-medium flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-slate-400" />{" "}
+                      {cls.schedule}
                     </p>
                   </div>
                 </div>
                 <span
-                  className={`text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shrink-0 ${cls.status === "Đang học" ? "bg-green-50 text-green-600" : "bg-orange-50 text-orange-600"}`}
+                  className={`text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shrink-0 shadow-sm ${cls.status === "Đang học" ? "bg-green-100 text-green-700 border border-green-200" : "bg-orange-100 text-orange-700 border border-orange-200"}`}
                 >
                   {cls.status}
                 </span>
@@ -713,28 +713,20 @@ export default function ClassesPage() {
                   </button>
                 </div>
               </div>
-            </motion.div>
+            </div>
           );
         })}
       </div>
 
       {/* Modal - CRUD Class */}
-      <AnimatePresence>
+      <>
         {isModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+            <div
               onClick={() => setIsModalOpen(false)}
-              className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+              className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200"
             />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-[640px] bg-white rounded-[32px] p-8 md:p-10 shadow-2xl overflow-hidden max-h-[95vh] overflow-y-auto"
-            >
+            <div className="relative w-full max-w-[640px] bg-white rounded-[32px] p-8 md:p-10 shadow-2xl overflow-hidden max-h-[95vh] overflow-y-auto animate-in zoom-in-95 slide-in-from-bottom-4 duration-300">
               <div className="flex items-center justify-between mb-8">
                 <h2 className="text-2xl font-bold">
                   {editingClass ? "Cập nhật lớp học" : "Mở lớp học mới"}
@@ -885,21 +877,15 @@ export default function ClassesPage() {
                   </button>
                 </div>
               </form>
-            </motion.div>
+            </div>
           </div>
         )}
-      </AnimatePresence>
+      </>
 
       {/* Detailed View & Attendance */}
-      <AnimatePresence>
+      <>
         {viewingClass && (
-          <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-0 z-[60] bg-slate-50 flex flex-col"
-          >
+          <div className="fixed inset-0 z-[60] bg-slate-50 flex flex-col animate-in slide-in-from-right duration-300">
             {/* Header */}
             <div className="bg-white border-b px-4 lg:px-10 h-auto py-4 flex items-center justify-between sticky top-0 z-10 shadow-sm">
               <div className="flex items-center gap-4">
@@ -913,9 +899,6 @@ export default function ClassesPage() {
                   <h2 className="text-lg lg:text-xl font-bold">
                     {viewingClass.name}
                   </h2>
-                  <p className="text-xs text-slate-400 flex items-center gap-2">
-                    <BookOpen className="w-3 h-3" /> {viewingClass.course}
-                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -951,6 +934,41 @@ export default function ClassesPage() {
             {/* Content */}
             <div className="flex-1 overflow-y-auto p-4 lg:p-10">
               <div className="max-w-[1000px] mx-auto space-y-8">
+                {/* PRO MAX COURSE INFO COMPONENT */}
+                <div className="relative overflow-hidden bg-primary text-primary-foreground rounded-[2rem] p-8 shadow-xl shadow-primary/20">
+                  <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-white/10 -mr-32 -mt-32 rounded-full blur-[80px] pointer-events-none" />
+                  <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div className="space-y-4">
+                      <p className="text-primary-foreground/80 text-xs font-black uppercase tracking-widest flex items-center gap-2">
+                        <BookOpen className="w-4 h-4" /> TRỰC THUỘC KHÓA HỌC
+                      </p>
+                      <h2 className="text-3xl lg:text-4xl font-extrabold tracking-tight">
+                        {viewingClass.course}
+                      </h2>
+                      <div className="flex flex-wrap items-center gap-4 text-sm font-medium text-primary-foreground/90 pt-2">
+                        <span className="flex items-center gap-1.5 bg-black/10 px-3 py-1.5 rounded-xl">
+                          <Clock className="w-4 h-4" /> {viewingClass.schedule}
+                        </span>
+                        <span className="flex items-center gap-1.5 bg-black/10 px-3 py-1.5 rounded-xl">
+                          <MapPin className="w-4 h-4" /> Phòng{" "}
+                          {viewingClass.room}
+                        </span>
+                        <span className="flex items-center gap-1.5 font-bold uppercase tracking-widest bg-white/20 px-3 py-1.5 rounded-xl text-xs text-white shadow-sm">
+                          {viewingClass.status}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="shrink-0 bg-white p-6 rounded-3xl flex flex-col items-center justify-center min-w-[140px] shadow-2xl skew-y-1 hover:skew-y-0 transition-transform duration-300">
+                      <span className="text-3xl font-black text-primary drop-shadow-sm">
+                        {viewingClass.studentsCount}
+                      </span>
+                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">
+                        Học viên / {viewingClass.maxStudents}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
                 {/* Teachers Detail */}
                 <div className="bg-white rounded-[28px] border border-slate-200 shadow-sm p-6 space-y-4">
                   <h3 className="font-bold flex items-center gap-2">
@@ -1167,9 +1185,9 @@ export default function ClassesPage() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
+      </>
     </div>
   );
 }

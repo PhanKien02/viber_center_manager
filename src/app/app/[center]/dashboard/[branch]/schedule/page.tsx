@@ -13,7 +13,6 @@ import {
   X,
   Calendar,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
 const days = ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ Nhật"];
@@ -222,12 +221,9 @@ function ScheduleCard({
   const endTimeStr = getEndTimeStr(item.startHour, item.durationHours);
 
   return (
-    <motion.div
-      initial={{ scale: 0.95, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.2 }}
+    <div
       onClick={() => onClick(item)}
-      className={`absolute inset-x-1 rounded-2xl border-l-4 ${item.accentColor} ${item.bgColor} shadow-sm group cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 overflow-hidden`}
+      className={`absolute inset-x-1 rounded-2xl border-l-4 ${item.accentColor} ${item.bgColor} shadow-sm group cursor-pointer hover:-translate-y-0.5 hover:shadow-md transition-all overflow-hidden animate-in zoom-in-95 fade-in duration-200`}
       style={{ top: `${top}px`, height: `${height}px` }}
     >
       <div className="p-2.5 h-full flex flex-col justify-between">
@@ -288,7 +284,7 @@ function ScheduleCard({
           </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -304,22 +300,12 @@ function ScheduleDetailPopup({
   const assistants = item.teachers.filter((t) => t.role === "assistant");
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-    >
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
       <div
         className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"
         onClick={onClose}
       />
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 16 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 16 }}
-        className="relative w-full max-w-md bg-white rounded-[32px] p-8 shadow-2xl"
-      >
+      <div className="relative w-full max-w-md bg-white rounded-[32px] p-8 shadow-2xl animate-in zoom-in-95 slide-in-from-bottom-4 duration-300">
         <div className="flex items-start justify-between mb-6">
           <div>
             <div
@@ -415,8 +401,8 @@ function ScheduleDetailPopup({
             </div>
           )}
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }
 
@@ -698,14 +684,14 @@ export default function SchedulePage() {
       )}
 
       {/* Detail Popup */}
-      <AnimatePresence>
+      <>
         {selectedItem && (
           <ScheduleDetailPopup
             item={selectedItem}
             onClose={() => setSelectedItem(null)}
           />
         )}
-      </AnimatePresence>
+      </>
     </div>
   );
 }
