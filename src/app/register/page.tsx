@@ -1,181 +1,403 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import {
-  GraduationCap,
-  Mail,
-  Lock,
-  ArrowLeft,
-  User,
-  Phone,
-  BookOpen,
-  Check,
+        ArrowRight,
+        Eye,
+        EyeOff,
+        Loader2,
+        Rocket,
+        Code,
+        BookOpen,
 } from "lucide-react";
 
 export default function RegisterPage() {
-  return (
-    <main className="min-h-screen flex items-center justify-center p-4 bg-muted/30 py-12 md:py-20">
-      {/* Background blur elements */}
-      <div className="fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute top-[5%] right-[10%] w-[35%] h-[35%] bg-primary/10 blur-[130px] rounded-full" />
-        <div className="absolute bottom-[5%] left-[10%] w-[35%] h-[35%] bg-accent/10 blur-[130px] rounded-full" />
-      </div>
+        const [showPassword, setShowPassword] = useState(false);
+        const [isLoading, setIsLoading] = useState(false);
 
-      <div className="w-full max-w-[560px] animate-in slide-in-from-bottom-6 duration-500">
-        {/* Back to Home */}
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-sm font-medium text-secondary hover:text-primary transition-colors mb-8 group"
-        >
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          Quay lại trang chủ
-        </Link>
+        const handleSubmit = (e: React.FormEvent) => {
+                e.preventDefault();
+                setIsLoading(true);
+                setTimeout(() => {
+                        window.location.href = "/app/demo-center/dashboard";
+                }, 1400);
+        };
 
-        {/* Register Card */}
-        <div className="bg-white p-8 md:p-12 rounded-[32px] border border-gray-100 shadow-2xl shadow-primary/5">
-          <div className="text-center mb-10">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 mb-6 group"
-            >
-              <div className="bg-primary p-2 rounded-xl">
-                <GraduationCap className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold font-heading tracking-tight">
-                Edu<span className="text-primary">Scale</span>
-              </span>
-            </Link>
-            <h1 className="text-2xl font-bold mb-2">
-              Bắt đầu dùng thử 14 ngày
-            </h1>
-            <p className="text-secondary text-sm">
-              Trải nghiệm đầy đủ tính năng, không cần thẻ tín dụng
-            </p>
-          </div>
+        return (
+                <>
+                        <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
-          <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <div className="space-y-2">
-                <label className="text-sm font-bold ml-1">Họ và tên</label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Nguyễn Văn A"
-                    className="w-full pl-12 pr-5 py-4 rounded-2xl bg-muted/50 border border-transparent focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/5 outline-none transition-all text-sm"
-                  />
-                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-secondary" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-bold ml-1">Số điện thoại</label>
-                <div className="relative">
-                  <input
-                    type="tel"
-                    placeholder="09xx xxx xxx"
-                    className="w-full pl-12 pr-5 py-4 rounded-2xl bg-muted/50 border border-transparent focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/5 outline-none transition-all text-sm"
-                  />
-                  <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-secondary" />
-                </div>
-              </div>
-            </div>
+        .font-friendly { font-family: 'Nunito', sans-serif; }
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold ml-1">Tên Trung tâm</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Trung tâm Luyện thi EduScale"
-                  className="w-full pl-12 pr-5 py-4 rounded-2xl bg-muted/50 border border-transparent focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/5 outline-none transition-all text-sm"
-                />
-                <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-secondary" />
-              </div>
-            </div>
+        .bg-bubbles {
+          background-color: var(--background);
+          background-image: 
+            radial-gradient(circle at 80% 20%, rgba(96, 165, 250, 0.08) 0%, transparent 25%),
+            radial-gradient(circle at 20% 80%, rgba(96, 165, 250, 0.08) 0%, transparent 25%),
+            radial-gradient(circle at 60% 50%, rgba(96, 165, 250, 0.03) 0%, transparent 40%);
+        }
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold ml-1">Email công việc</label>
-              <div className="relative">
-                <input
-                  type="email"
-                  placeholder="name@company.com"
-                  className="w-full pl-12 pr-5 py-4 rounded-2xl bg-muted/50 border border-transparent focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/5 outline-none transition-all text-sm"
-                />
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-secondary" />
-              </div>
-            </div>
+        @keyframes gentle-float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-10px) rotate(-1deg); }
+        }
+        .animate-float {
+          animation: gentle-float 7s ease-in-out infinite;
+        }
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold ml-1">Mật khẩu</label>
-              <div className="relative">
-                <input
-                  type="password"
-                  placeholder="Ít nhất 8 ký tự"
-                  className="w-full pl-12 pr-5 py-4 rounded-2xl bg-muted/50 border border-transparent focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/5 outline-none transition-all text-sm"
-                />
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-secondary" />
-              </div>
-            </div>
+        .soft-input {
+          background-color: var(--card);
+          border: 2px solid transparent;
+          border-radius: var(--radius);
+          box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+          transition: all 0.2s ease;
+        }
+        .soft-input:focus {
+          outline: none;
+          border-color: var(--primary);
+          box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.15), inset 0 2px 4px rgba(0,0,0,0.02);
+        }
 
-            <div className="pt-2">
-              <div className="flex items-start gap-3 mb-6 ml-1">
-                <input
-                  type="checkbox"
-                  id="terms"
-                  className="mt-1 accent-primary"
-                />
-                <label
-                  htmlFor="terms"
-                  className="text-xs text-secondary leading-relaxed"
-                >
-                  Tôi đồng ý với{" "}
-                  <Link
-                    href="#"
-                    className="font-bold text-primary hover:underline"
-                  >
-                    Điều khoản dịch vụ
-                  </Link>{" "}
-                  và{" "}
-                  <Link
-                    href="#"
-                    className="font-bold text-primary hover:underline"
-                  >
-                    Chính sách bảo mật
-                  </Link>{" "}
-                  của EduScale.
-                </label>
-              </div>
+        .btn-soft {
+          background-color: var(--primary);
+          color: var(--primary-foreground);
+          border-radius: var(--radius);
+          font-weight: 700;
+          cursor: pointer;
+          box-shadow: 0 4px 0 rgba(0,0,0,0.1), 0 8px 16px rgba(96, 165, 250, 0.3);
+          transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-soft:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 0 rgba(0,0,0,0.1), 0 12px 20px rgba(96, 165, 250, 0.4);
+        }
+        .btn-soft:active {
+          transform: translateY(4px);
+          box-shadow: 0 0 0 rgba(0,0,0,0.1), 0 2px 4px rgba(96, 165, 250, 0.2);
+        }
 
-              <button className="w-full bg-primary hover:bg-primary-hover text-white py-4 rounded-2xl font-bold shadow-xl shadow-primary/20 transition-all duration-300 transform active:scale-[0.98]">
-                Bắt đầu dùng thử miễn phí
-              </button>
-            </div>
-          </form>
+        .soft-card {
+          background-color: var(--card);
+          border-radius: calc(var(--radius) * 1.5);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.02);
+          border: 1px solid rgba(255,255,255,0.5);
+        }
+      `}</style>
 
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-gray-100 pt-8">
-            <div className="flex items-center gap-2 text-[10px] md:text-xs text-secondary">
-              <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center shrink-0">
-                <Check className="w-3 h-3 text-green-600" />
-              </div>
-              Không yêu cầu thẻ tín dụng
-            </div>
-            <div className="flex items-center gap-2 text-[10px] md:text-xs text-secondary">
-              <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center shrink-0">
-                <Check className="w-3 h-3 text-green-600" />
-              </div>
-              Hủy bất cứ lúc nào
-            </div>
-          </div>
+                        <main className="min-h-screen w-full flex items-center justify-center p-4 lg:p-8 bg-bubbles font-friendly text-foreground selection:bg-primary/20">
+                                <div className="w-full max-w-6xl flex flex-col lg:flex-row-reverse items-center justify-center gap-8 lg:gap-16 relative">
+                                        {/* Decorative Background */}
+                                        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -z-10" />
+                                        <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary/20 rounded-full blur-3xl -z-10" />
 
-          <p className="text-center mt-10 text-sm text-secondary">
-            Đã có tài khoản?{" "}
-            <Link
-              href="/login"
-              className="font-bold text-primary hover:underline"
-            >
-              Đăng nhập ngay
-            </Link>
-          </p>
-        </div>
-      </div>
-    </main>
-  );
+                                        {/* RIGHT SIDE - Value Proposition */}
+                                        <section className="w-full lg:w-[45%] flex flex-col justify-center order-2 lg:order-1 relative z-10 px-4 lg:px-0">
+                                                <div className="animate-float inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full text-sm font-bold text-primary shadow-sm w-fit mb-6 border border-primary/10">
+                                                        <Rocket className="w-4 h-4" />
+                                                        <span>
+                                                                Dùng thử 14 ngày
+                                                                miễn phí
+                                                        </span>
+                                                </div>
+
+                                                <h1 className="text-4xl lg:text-5xl xl:text-6xl font-black text-foreground leading-[1.1] tracking-tight mb-6">
+                                                        Nâng tầm{" "}
+                                                        <br className="hidden lg:block" />
+                                                        <span className="text-primary relative inline-block">
+                                                                Tổ chức đào tạo
+                                                                <svg
+                                                                        className="absolute w-full h-3 -bottom-1 left-0 text-primary opacity-30"
+                                                                        viewBox="0 0 100 10"
+                                                                        preserveAspectRatio="none"
+                                                                >
+                                                                        <path
+                                                                                d="M0 5 Q 50 10 100 5"
+                                                                                stroke="currentColor"
+                                                                                strokeWidth="4"
+                                                                                fill="none"
+                                                                                strokeLinecap="round"
+                                                                        />
+                                                                </svg>
+                                                        </span>
+                                                </h1>
+
+                                                <p className="text-lg text-muted-foreground font-medium mb-8 max-w-md leading-relaxed">
+                                                        Tạo tài khoản học viện
+                                                        của bạn ngay hôm nay.
+                                                        Vận hành công tác giảng
+                                                        dạy trơn tru chỉ với vài
+                                                        click.
+                                                </p>
+
+                                                <div className="space-y-4">
+                                                        <div className="flex items-center gap-4 bg-card p-4 rounded-(--radius) shadow-sm border border-border/50">
+                                                                <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center shrink-0">
+                                                                        <Code className="w-5 h-5" />
+                                                                </div>
+                                                                <div>
+                                                                        <h3 className="font-bold text-sm text-foreground">
+                                                                                Không
+                                                                                cần
+                                                                                thẻ
+                                                                                tín
+                                                                                dụng
+                                                                        </h3>
+                                                                        <p className="text-xs text-muted-foreground font-medium">
+                                                                                Bắt
+                                                                                đầu
+                                                                                ngay,
+                                                                                không
+                                                                                ràng
+                                                                                buộc
+                                                                                rườm
+                                                                                rà.
+                                                                        </p>
+                                                                </div>
+                                                        </div>
+                                                        <div className="flex items-center gap-4 bg-card p-4 rounded-(--radius) shadow-sm border border-border/50">
+                                                                <div className="w-10 h-10 bg-green-50 text-green-600 rounded-full flex items-center justify-center shrink-0">
+                                                                        <BookOpen className="w-5 h-5" />
+                                                                </div>
+                                                                <div>
+                                                                        <h3 className="font-bold text-sm text-foreground">
+                                                                                Hỗ
+                                                                                trợ
+                                                                                thiết
+                                                                                lập
+                                                                                1-1
+                                                                        </h3>
+                                                                        <p className="text-xs text-muted-foreground font-medium">
+                                                                                Đội
+                                                                                ngũ
+                                                                                chúng
+                                                                                tôi
+                                                                                luôn
+                                                                                đồng
+                                                                                hành
+                                                                                cùng
+                                                                                bạn.
+                                                                        </p>
+                                                                </div>
+                                                        </div>
+                                                </div>
+                                        </section>
+
+                                        {/* LEFT SIDE - Registration Card */}
+                                        <section className="w-full max-w-[460px] lg:w-[45%] order-1 lg:order-2 z-20">
+                                                <div className="soft-card p-8 sm:p-10 w-full relative overflow-hidden">
+                                                        <div className="absolute top-0 left-0 w-full h-1.5 bg-linear-to-r from-blue-400 to-primary" />
+
+                                                        <div className="mb-8">
+                                                                <h2 className="text-2xl font-black text-foreground mb-1">
+                                                                        Đăng ký
+                                                                        tài
+                                                                        khoản
+                                                                </h2>
+                                                                <p className="text-sm text-muted-foreground font-medium">
+                                                                        Hoàn tất
+                                                                        vài
+                                                                        thông
+                                                                        tin cơ
+                                                                        bản
+                                                                </p>
+                                                        </div>
+
+                                                        <form
+                                                                onSubmit={
+                                                                        handleSubmit
+                                                                }
+                                                                className="space-y-4"
+                                                                noValidate
+                                                        >
+                                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                                        <div className="space-y-1.5">
+                                                                                <label
+                                                                                        htmlFor="reg-name"
+                                                                                        className="text-sm font-bold text-foreground"
+                                                                                >
+                                                                                        Họ
+                                                                                        và
+                                                                                        tên
+                                                                                </label>
+                                                                                <input
+                                                                                        id="reg-name"
+                                                                                        type="text"
+                                                                                        placeholder="Nguyễn Văn A"
+                                                                                        className="soft-input w-full px-4 py-3.5 text-foreground placeholder:text-muted-foreground/60 transition-all font-medium"
+                                                                                        required
+                                                                                />
+                                                                        </div>
+                                                                        <div className="space-y-1.5">
+                                                                                <label
+                                                                                        htmlFor="reg-phone"
+                                                                                        className="text-sm font-bold text-foreground"
+                                                                                >
+                                                                                        Số
+                                                                                        điện
+                                                                                        thoại
+                                                                                </label>
+                                                                                <input
+                                                                                        id="reg-phone"
+                                                                                        type="tel"
+                                                                                        placeholder="09xx xxx xxx"
+                                                                                        className="soft-input w-full px-4 py-3.5 text-foreground placeholder:text-muted-foreground/60 transition-all font-medium"
+                                                                                        required
+                                                                                />
+                                                                        </div>
+                                                                </div>
+
+                                                                <div className="space-y-1.5">
+                                                                        <label
+                                                                                htmlFor="reg-center"
+                                                                                className="text-sm font-bold text-foreground"
+                                                                        >
+                                                                                Tên
+                                                                                trung
+                                                                                tâm
+                                                                        </label>
+                                                                        <input
+                                                                                id="reg-center"
+                                                                                type="text"
+                                                                                placeholder="EduScale Academy"
+                                                                                className="soft-input w-full px-4 py-3.5 text-foreground placeholder:text-muted-foreground/60 transition-all font-medium"
+                                                                                required
+                                                                        />
+                                                                </div>
+
+                                                                <div className="space-y-1.5">
+                                                                        <label
+                                                                                htmlFor="reg-email"
+                                                                                className="text-sm font-bold text-foreground"
+                                                                        >
+                                                                                Email
+                                                                                công
+                                                                                việc
+                                                                        </label>
+                                                                        <input
+                                                                                id="reg-email"
+                                                                                type="email"
+                                                                                placeholder="name@eduscale.com"
+                                                                                className="soft-input w-full px-4 py-3.5 text-foreground placeholder:text-muted-foreground/60 transition-all font-medium"
+                                                                                required
+                                                                        />
+                                                                </div>
+
+                                                                <div className="space-y-1.5">
+                                                                        <label
+                                                                                htmlFor="reg-password"
+                                                                                className="text-sm font-bold text-foreground"
+                                                                        >
+                                                                                Mật
+                                                                                khẩu
+                                                                        </label>
+                                                                        <div className="relative">
+                                                                                <input
+                                                                                        id="reg-password"
+                                                                                        type={
+                                                                                                showPassword
+                                                                                                        ? "text"
+                                                                                                        : "password"
+                                                                                        }
+                                                                                        placeholder="Ít nhất 8 ký tự"
+                                                                                        className="soft-input w-full pl-4 pr-12 py-3.5 text-foreground placeholder:text-muted-foreground/60 transition-all font-medium"
+                                                                                        required
+                                                                                        minLength={
+                                                                                                8
+                                                                                        }
+                                                                                />
+                                                                                <button
+                                                                                        type="button"
+                                                                                        onClick={() =>
+                                                                                                setShowPassword(
+                                                                                                        !showPassword,
+                                                                                                )
+                                                                                        }
+                                                                                        className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-muted"
+                                                                                        aria-label={
+                                                                                                showPassword
+                                                                                                        ? "Ẩn mật khẩu"
+                                                                                                        : "Hiện mật khẩu"
+                                                                                        }
+                                                                                >
+                                                                                        {showPassword ? (
+                                                                                                <EyeOff className="w-4 h-4" />
+                                                                                        ) : (
+                                                                                                <Eye className="w-4 h-4" />
+                                                                                        )}
+                                                                                </button>
+                                                                        </div>
+                                                                </div>
+
+                                                                <button
+                                                                        type="submit"
+                                                                        disabled={
+                                                                                isLoading
+                                                                        }
+                                                                        className="btn-soft w-full mt-6 py-4 flex items-center justify-center gap-2 text-[15px] disabled:opacity-70 disabled:cursor-not-allowed group"
+                                                                >
+                                                                        {isLoading ? (
+                                                                                <>
+                                                                                        <Loader2 className="w-5 h-5 animate-spin" />{" "}
+                                                                                        Đang
+                                                                                        tạo
+                                                                                        tài
+                                                                                        khoản...
+                                                                                </>
+                                                                        ) : (
+                                                                                <>
+                                                                                        Tạo
+                                                                                        Tài
+                                                                                        Khoản
+                                                                                        Miễn
+                                                                                        Phí{" "}
+                                                                                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                                                                </>
+                                                                        )}
+                                                                </button>
+                                                        </form>
+
+                                                        <div className="mt-8 text-center">
+                                                                <p className="text-xs text-muted-foreground/80 font-medium mb-4">
+                                                                        Bằng
+                                                                        việc
+                                                                        đăng ký,
+                                                                        bạn đồng
+                                                                        ý với{" "}
+                                                                        <Link
+                                                                                href="#"
+                                                                                className="font-bold border-b border-border hover:border-muted-foreground transition-colors"
+                                                                        >
+                                                                                Điều
+                                                                                khoản
+                                                                        </Link>{" "}
+                                                                        &{" "}
+                                                                        <Link
+                                                                                href="#"
+                                                                                className="font-bold border-b border-border hover:border-muted-foreground transition-colors"
+                                                                        >
+                                                                                Bảo
+                                                                                mật
+                                                                        </Link>
+                                                                </p>
+                                                                <p className="text-sm font-bold text-muted-foreground">
+                                                                        Đã có
+                                                                        tài
+                                                                        khoản?{" "}
+                                                                        <Link
+                                                                                href="/login"
+                                                                                className="text-primary hover:text-blue-500 hover:underline underline-offset-4 transition-all drop-shadow-sm"
+                                                                        >
+                                                                                Đăng
+                                                                                nhập
+                                                                        </Link>
+                                                                </p>
+                                                        </div>
+                                                </div>
+                                        </section>
+                                </div>
+                        </main>
+                </>
+        );
 }

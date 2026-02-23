@@ -9,8 +9,8 @@ export default function Hero() {
     <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-accent/10 blur-[120px] rounded-full" />
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-violet-600/10 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-orange-500/10 blur-[120px] rounded-full" />
       </div>
 
       <div className="container mx-auto px-4 md:px-6">
@@ -35,28 +35,28 @@ export default function Hero() {
           </div>
 
           {/* Headline */}
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold font-heading leading-[1.1] mb-8 animate-in fade-in slide-in-from-bottom-6 duration-500 delay-100 fill-mode-both">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.05] mb-8 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100 fill-mode-both text-slate-900">
             Nâng tầm quản lý <br />
             <span className="text-gradient">Trung tâm Luyện thi</span> của bạn
           </h1>
 
           {/* Subheader */}
-          <p className="text-lg md:text-xl text-secondary mb-10 max-w-2xl animate-in fade-in slide-in-from-bottom-6 duration-500 delay-200 fill-mode-both">
+          <p className="text-lg md:text-2xl text-slate-600 mb-12 max-w-3xl font-medium animate-in fade-in slide-in-from-bottom-6 duration-700 delay-200 fill-mode-both leading-relaxed">
             Tự động hóa học phí, tối ưu lịch dạy và kết nối phụ huynh tức thì.
             Giải pháp toàn diện giúp bạn tập trung vào chất lượng giảng dạy.
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 mb-16 w-full sm:w-auto animate-in fade-in slide-in-from-bottom-6 duration-500 delay-300 fill-mode-both">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20 w-full sm:w-auto animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300 fill-mode-both">
             <Link
               href="/register"
-              className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-white px-8 py-4 rounded-2xl text-lg font-bold shadow-xl shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 group cursor-pointer"
+              className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white px-10 py-5 rounded-full text-xl font-extrabold shadow-2xl shadow-orange-500/25 transition-all duration-300 hover:-translate-y-1 hover:shadow-orange-500/40 flex items-center justify-center gap-2 group cursor-pointer"
             >
               Dùng thử miễn phí 14 ngày
-              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
             </Link>
-            <button className="w-full sm:w-auto bg-white border border-gray-200 hover:border-primary/30 px-8 py-4 rounded-2xl text-lg font-bold transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer hover:bg-gray-50">
-              <PlayCircle className="w-5 h-5" />
+            <button className="w-full sm:w-auto bg-white border-2 border-slate-200 hover:border-slate-300 text-slate-700 px-10 py-5 rounded-full text-xl font-bold transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer hover:bg-slate-50 hover:-translate-y-1">
+              <PlayCircle className="w-6 h-6 text-slate-400 group-hover:text-primary transition-colors" />
               Xem Demo trực tiếp
             </button>
           </div>
